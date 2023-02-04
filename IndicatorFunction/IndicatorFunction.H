@@ -42,9 +42,14 @@ class IndicatorFunction
 
   IndicatorFunction(const IndicatorFunction&) = delete;
 
-  IndicatorFunction(dimensionedScalar& _alphar,volScalarField& _aU,volScalarField& _aE);
+  IndicatorFunction
+   (
+    dimensionedScalar& _alphar,
+    volScalarField& _aU,
+    volScalarField& _aE
+    );
 
-  dimensionedScalar&  alphaRadiusRef();
+  dimensionedScalar&  alphaRadiusRef(); // Filtering radius 
 
   const dimensionedScalar& alphaRadius() const;
   

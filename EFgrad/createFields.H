@@ -80,6 +80,13 @@ autoPtr<compressible::turbulenceModel> turbulence
     )
 );
 
+/*Info<< "Creating thermophysical transport model\n" << endl;
+autoPtr<fluidThermophysicalTransportModel> thermophysicalTransport
+(
+    fluidThermophysicalTransportModel::New(turbulence(), thermo)
+);*/
+
+
 #include "readGravitationalAcceleration.H"
 #include "readhRef.H"
 #include "gh.H"
@@ -123,6 +130,7 @@ if (p_rgh.needReference())
 }
 mesh.setFluxRequired(p_rgh.name());
 
+
 #include "phrghEqn.H"
 
 
@@ -136,3 +144,5 @@ dimensionedScalar initialMass = fvc::domainIntegrate(rho);
 
 #include "createMRF.H"
 #include "createFvOptions.H"
+
+
