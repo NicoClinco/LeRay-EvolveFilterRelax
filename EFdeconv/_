@@ -1,0 +1,48 @@
+
+tmp<volScalarField> FilterViscosityStep =a.FilteringViscosityU();
+
+// Numero di iterazioni che devo fare
+
+
+//label N_Iter = transportProperties.lookupOrDefault("Niter",1); //ricordarsi che questo va in createIndicatorFunction come IOobject!
+
+ /*------------------------------------------------ First Step : LINEAR IF ----------------------------------------*/ 
+ fvVectorMatrix UfilteredEqn
+ (
+  fvm::Sp(dimensionedScalar("one",dimless,1),Ufi)-fvc::div(FilterViscosityStep()*(dev2(T(fvc::grad(UTilda)))))
+ );
+ solve( UfilteredEqn == UTilda +fvm::laplacian(FilterViscosityStep(),Ufi)) ;
+ 
+
+ fvScalarMatrix hefilteredEqn
+ (
+  fvm::Sp(dimensionedScalar("one",dimless,1),hefi) //-fvm::laplacian(FilterViscosityStep(),hefi)
+ );
+
+ solve( hefilteredEqn == heTilda + fvm::laplacian(FilterViscosityStep(),hefi) );
+
+ /* ----------------------------------------------------------------------------------------------------------------- */
+ 
+ /* ----------------------------------------------- Evaluation of the Indicator Function ----------------------------- */
+ dimensionedScalar one("one",U.dimensions(),1.0);
+ volVectorField::Internal deltaU = (Ufi.internalField()-UTilda.internalField());
+ volScalarField::Internal Udifference = mag(deltaU);
+ dimensionedScalar maxDiff = max(Udifference);
+ dimensionedScalar NormalizingFactor = max( one , maxDiff );
+ aU.ref() = Udifference/NormalizingFactor;
+ UTilda = Ufi;
+ heTilda = hefi;
+ /* -------------------------------------------------------------------------------------------------------------------- */ 
+
+ /*   /---------------------------------------------------Solve the laplacian-again--------------------------------------- \ */
+ FilterViscosityStep.ref() = a.FilteringViscosityU();
+ 
+ //UfilteredEqn = ( -fvm::laplacian(FilterViscosityStep(),Ufi)-fvc::div(FilterViscosityStep()*(dev2(T(fvc::grad(UTilda))))) );
+ solve ( UfilteredEqn ==UTilda +fvm::laplacian(FilterViscosityStep(),Ufi) ); 
+ UTilda = Ufi;
+ 
+ //hefilteredEqn = ( fvm::Sp(dimensionedScalar("one",dimless,1),hefi)-fvm::laplacian(FilterViscosityStep(),hefi) );
+ solve ( hefilteredEqn == heTilda );
+ heTilda = hefi;
+
+/*   ----------------------------------------------------------------------------------------------------------------------- */ 

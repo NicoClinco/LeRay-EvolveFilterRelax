@@ -1,25 +1,11 @@
-/*---------------------------------------------------------------------------*\
- \============ \============             
- \|||||||||||   \|||\\\\\\\\|           //|\\
- \|||     |||   \|||                   ///|\\\
- \|||     |||   \|||                  ///###\\\
- \|||           \|||\\\\\\\\|        ///     \\\
- \|||           \|||--------|       ///#######\\\
- /|||   \\\\|   /|||////////|      //////||\\\\\\\
- /|||   //|||   /|||              ///////||\\\\\\\\
- /|||     |||   /|||             /////         \\\\\
- /|||||||||||   /|||////////|   /////           \\\\\
- /==========|   /===========|  /////             \\\\\
--------------------------------------------------------------------------------
-License
-    This file is part of GEA
+/*-------------------------------------------------------------------------*\
 
 Application
-    EFgrad
+    EFdecon
 
 Description
-    Transient solver to filter the compressible Navier-Stokes equations
-    with the gradient-type filter
+    Transient solver for compressible Navier-Stokes equations with gravity
+    Turbulence is modelled using the Deconvolution-based filter
 
 \*---------------------------------------------------------------------------*/
 
@@ -41,9 +27,8 @@ int main(int argc, char *argv[])
 {
     argList::addNote
     (
-        "Transient solver for filtering"
-	"the compressible navier-stokes"
-	"equations with the gradient-type filter"
+        "Transient solver for dryAir by using"
+        "the Deconvolution-Based filter "
     );
 
     #include "postProcess.H"
@@ -98,13 +83,32 @@ int main(int argc, char *argv[])
 
         rho = thermo.rho();
         
+	 
+	 volVectorField UTilda( U );
+	 volScalarField heTilda( thermo.he() );
+	
+ 	 for(label i=0;i<N_Iter;i++){
 
-	 #include "FilteringStep.H"
+	 #include "DeconvolutionFilteringStep.H"
+ 
+	 }
+	 thermo.he() = heTilda;
+	 U = UTilda;
+
+	 thermo.correct();
 
         theta = thermo.T() - gh/thermo.Cp() - theta0;
-
+        
         runTime.write();
-	
+	/*
+	fileName NameViscosity("ArtificialViscosity");
+	OFstream fileViscous(runTime.timeName()/"ArtificialViscosity.txt");
+	Info << runTime.timeName()<<endl;
+	fileViscous << " Filtering viscosity Step at time "
+	<<runTime.timeName() <<"endl";
+	fileViscous << FilterViscosityStep() <<endl;
+ 	*/
+
         runTime.printExecutionTime(Info);
     }
 
