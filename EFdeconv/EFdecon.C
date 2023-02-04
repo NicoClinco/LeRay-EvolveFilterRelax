@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 	 volScalarField heTilda( thermo.he() );
 	
  	 for(label i=0;i<N_Iter;i++){
-
+	 Info << i << " iteration" << endl;
 	 #include "DeconvolutionFilteringStep.H"
  
 	 }

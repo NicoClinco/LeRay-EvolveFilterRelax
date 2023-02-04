@@ -75,4 +75,4 @@ volScalarField hefi
 IndicatorFunction a(alphaR,aU,aE);
 
 // Set the number of iterations to do:
-label N_Iter = FilteringProperties.lookupOrDefault("N_Iter",1);
+label N_Iter = FilteringProperties.lookupOrDefault("N_iter",1);
