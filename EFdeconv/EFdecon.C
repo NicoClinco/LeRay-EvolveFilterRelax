@@ -91,7 +91,8 @@ int main(int argc, char *argv[])
 	 Info << i << " iteration" << endl;
 	 #include "DeconvolutionFilteringStep.H"
 
- 	  #include "RelaxationStep.H"
+ 	 #include "RelaxationStep.H"
+ 	 #include "printViscosity.H"
 	 }
 	 thermo.he() = heTilda;
 	 U = UTilda;
