@@ -90,11 +90,14 @@ int main(int argc, char *argv[])
  	 for(label i=0;i<N_Iter;i++){
 	 Info << i << " iteration" << endl;
 	 #include "DeconvolutionFilteringStep.H"
- 
+
+ 	  #include "RelaxationStep.H"
 	 }
 	 thermo.he() = heTilda;
 	 U = UTilda;
-
+         
+	
+	
 	 thermo.correct();
 
         theta = thermo.T() - gh/thermo.Cp() - theta0;
