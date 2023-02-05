@@ -50,10 +50,10 @@ tmp<volScalarField> FilterViscosityStep =a.FilteringViscosityU();
  /* /---------------------------------------------------Solve the laplacian-again--------------------------------------- \ */
  FilterViscosityStep.ref() = a.FilteringViscosityU();
  
- solve ( UfiEqn == UTilda +fvm::laplacian(FilterViscosityStep(),Ufi)  ); 
+ solve ( UfiEqn == U +fvm::laplacian(FilterViscosityStep(),Ufi)  ); 
  UTilda = Ufi;
  
- solve ( hefiEqn == heTilda + fvm::laplacian(FilterViscosityStep(),hefi) );
+ solve ( hefiEqn == thermo.he() + fvm::laplacian(FilterViscosityStep(),hefi) );
  heTilda = hefi;
 
 /*   ----------------------------------------------------------------------------------------------------------------------- */ 
