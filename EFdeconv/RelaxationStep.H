@@ -2,6 +2,9 @@
 scalar Chi = FilteringProperties.lookupOrDefault("Urelax",0.0);
 scalar  Xi = FilteringProperties.lookupOrDefault("herelax",0.0);
 
-UTilda = (1-Chi)*UTilda + Chi*U;
+Chi = Chi/(max(aU.ref()).value());
+Xi = Xi/(max(aU.ref()).value());
 
-heTilda = (1-Xi)*heTilda + Xi*thermo.he();
+UTilda = Chi*UTilda + (1-Chi)*U;
+
+heTilda = (Xi)*heTilda + (1-Xi)*thermo.he();
