@@ -37,14 +37,23 @@ tmp<volScalarField> FilterViscosityStep =a.FilteringViscosityU();
  UTilda = Ufi;
  heTilda = hefi;
  /* -------------------------------------------------------------------------------------------------------------------- */ 
+ fvVectorMatrix UfiEqn 
+ ( 
+  fvm::Sp(dimensionedScalar("one",dimless,1),Ufi)
+ );
+
+ fvScalarMatrix hefiEqn
+ (
+  fvm::Sp(dimensionedScalar("one",dimless,1),hefi)
+ );
 
  /* /---------------------------------------------------Solve the laplacian-again--------------------------------------- \ */
  FilterViscosityStep.ref() = a.FilteringViscosityU();
  
- solve ( UfilteredEqn ==UTilda +fvm::laplacian(FilterViscosityStep(),Ufi)  ); 
+ solve ( UfiEqn == UTilda +fvm::laplacian(FilterViscosityStep(),Ufi)  ); 
  UTilda = Ufi;
  
- solve ( hefilteredEqn == heTilda + fvm::laplacian(FilterViscosityStep(),hefi) );
+ solve ( hefiEqn == heTilda + fvm::laplacian(FilterViscosityStep(),hefi) );
  heTilda = hefi;
 
 /*   ----------------------------------------------------------------------------------------------------------------------- */ 

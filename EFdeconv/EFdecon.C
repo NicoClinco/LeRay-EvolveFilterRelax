@@ -88,30 +88,20 @@ int main(int argc, char *argv[])
 	 volScalarField heTilda( thermo.he() );
 	
  	 for(label i=0;i<N_Iter;i++){
-	 Info << i << " iteration" << endl;
+	 
 	 #include "DeconvolutionFilteringStep.H"
-
  	 #include "RelaxationStep.H"
  	 #include "printViscosity.H"
+
 	 }
 	 thermo.he() = heTilda;
 	 U = UTilda;
          
-	
-	
 	 thermo.correct();
 
         theta = thermo.T() - gh/thermo.Cp() - theta0;
         
         runTime.write();
-	/*
-	fileName NameViscosity("ArtificialViscosity");
-	OFstream fileViscous(runTime.timeName()/"ArtificialViscosity.txt");
-	Info << runTime.timeName()<<endl;
-	fileViscous << " Filtering viscosity Step at time "
-	<<runTime.timeName() <<"endl";
-	fileViscous << FilterViscosityStep() <<endl;
- 	*/
 
         runTime.printExecutionTime(Info);
     }
