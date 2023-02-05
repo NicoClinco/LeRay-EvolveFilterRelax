@@ -22,11 +22,12 @@ tmp<volScalarField> FilterViscosityStep =a.FilteringViscosityU();
 
 fvVectorMatrix UfilteredEqn
 (
- -fvm::laplacian(FilterViscosityStep(),Ufi)-fvc::div(FilterViscosityStep()*(dev2(T(fvc::grad(U)))))
+ -fvm::laplacian(FilterViscosityStep(),Ufi)
 );
 
 solve( UfilteredEqn == U-fvm::Sp(dimensionedScalar("one",dimless,1),Ufi) );
-U=Ufi;
+
+//U=Ufi;
 
 /* ------------------------ End filter Step for Velocity  ------------------------- */ 
 
@@ -34,7 +35,7 @@ U=Ufi;
 
 /* ------------------------     Filter Step for Energy    --------------------------- */
 
-volScalarField& he = thermo.he();
+const volScalarField& he = thermo.he();
 
 fvScalarMatrix hefilteredEqn
 (
@@ -42,9 +43,10 @@ fvScalarMatrix hefilteredEqn
 );
 
 solve ( hefilteredEqn == he );
-he = hefi;
 
-thermo.correct();
+// he = hefi;
+
+// thermo.correct();
 
 /* ----------------------     End Filter Step for Energy ----------------------------- */
 
