@@ -1,7 +1,6 @@
 // Relax the equations :
-
-scalar Chi = 0.95;
-scalar Xi = 0.95;
+scalar Chi = FilteringProperties.lookupOrDefault("Urelax",0.0);
+scalar  Xi = FilteringProperties.lookupOrDefault("herelax",0.0);
 
 UTilda = (1-Chi)*UTilda + Chi*U;
 

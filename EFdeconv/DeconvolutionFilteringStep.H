@@ -1,5 +1,7 @@
 aU.ref() = 1.0;
 
+aU.boundaryFieldRef() = scalar(1.0);
+
 tmp<volScalarField> FilterViscosityStep =a.FilteringViscosityU();
  /*------------------------------------------------ First Step : LINEAR IF ----------------------------------------*/ 
  fvVectorMatrix UfilteredEqn
