@@ -2,15 +2,6 @@
 scalar Chi = FilteringProperties.lookupOrDefault("Urelax",1.0);
 scalar  Xi = FilteringProperties.lookupOrDefault("herelax",1.0);
 
-<<<<<<< HEAD
-UTilda = Chi*UTilda + (1-Chi)*U;
-
-heTilda = Xi*heTilda + (1-Xi)*thermo.he();
-=======
-//Chi = Chi/(max(aU.ref()).value());
-//Xi = Xi/(max(aU.ref()).value());
-
 UTilda = Chi*UTilda + (1-Chi)*U;
 
 heTilda = (Xi)*heTilda + (1-Xi)*thermo.he();
->>>>>>> EFdeconvBranch
