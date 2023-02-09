@@ -28,23 +28,36 @@ tmp<volScalarField> FilterViscosityStep =a.FilteringViscosityU();
  dimensionedScalar maxDiff = max(Udifference);
  dimensionedScalar NormalizingFactor = max( one , maxDiff );
  aU.ref() = Udifference/NormalizingFactor;                  //aU = |uFi - U(evolve)|/max(1,normInf(Ufi-U(Evolve)))
+
  
  forAll(aU.boundaryField(),patchi)
 {
   aU.boundaryFieldRef()[patchi] = scalar(0.0);
 } 
 
+
+
+
  UTilda = Ufi;
  heTilda = hefi;
  /* -------------------------------------------------------------------------------------------------------------------- */ 
+ fvVectorMatrix UfiEqn 
+ ( 
+  fvm::Sp(dimensionedScalar("one",dimless,1),Ufi)
+ );
+
+ fvScalarMatrix hefiEqn
+ (
+  fvm::Sp(dimensionedScalar("one",dimless,1),hefi)
+ );
 
  /* /---------------------------------------------------Solve the laplacian-again--------------------------------------- \ */
  FilterViscosityStep.ref() = a.FilteringViscosityU();
  
- solve ( UfilteredEqn ==UTilda +fvm::laplacian(FilterViscosityStep(),Ufi)  ); 
+ solve ( UfiEqn == U +fvm::laplacian(FilterViscosityStep(),Ufi)  ); 
  UTilda = Ufi;
  
- solve ( hefilteredEqn == heTilda + fvm::laplacian(FilterViscosityStep(),hefi) );
+ solve ( hefiEqn == thermo.he() + fvm::laplacian(FilterViscosityStep(),hefi) );
  heTilda = hefi;
 
 /*   ----------------------------------------------------------------------------------------------------------------------- */ 

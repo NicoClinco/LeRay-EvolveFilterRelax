@@ -100,6 +100,10 @@ int main(int argc, char *argv[])
         
 
 	 #include "FilteringStep.H"
+	 #include "printViscosity.H" 
+	 #include "RelaxationStep.H"
+
+	 thermo.correct();
 
         theta = thermo.T() - gh/thermo.Cp() - theta0;
 
