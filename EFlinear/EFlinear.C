@@ -97,45 +97,6 @@ int main(int argc, char *argv[])
         theta = thermo.T() - gh/thermo.Cp() - theta0;
          
 	runTime.write();
-
-        /*
-        scalar vmax = max(U.component(1)).value();
-        scalar vavg = 0;
-        scalar Volume = 0;
-
-        forAll (U.internalField(), cellI)
-        {
-             vavg += (U[cellI] & vector (0, 1, 0))*mesh.V()[cellI];
-             Volume += mesh.V()[cellI];
-        }
-
-        reduce(vavg, sumOp<scalar> ());
-        reduce(Volume, sumOp<scalar> ());
-
-        vavg = vavg/Volume;
-       
-        
-        std::ofstream file;
-        file.open ("results.txt", std::ofstream::out | std::ofstream::app);
-
-       if (Pstream::master())
-        {
-            file << runTime.timeName() << "\t" << vmax << "\t" << vavg << std::endl << "\n";
-        }
-        */
-
-        
-	/*
-	fileName NameViscosity("ArtificialViscosity");
-	OFstream fileViscous(runTime.timeName()/"ArtificialViscosity.txt");
-	Info << runTime.timeName()<<endl;
-	fileViscous << " Filtering viscosity Step at time "
-	<<runTime.timeName() <<"endl";
-	fileViscous << FilterViscosityStep() <<endl;
- 	*/
-	
-	// Make a file in which i should put the injected viscosity 
-	// at various time-step 
 	
         runTime.printExecutionTime(Info);
     }
