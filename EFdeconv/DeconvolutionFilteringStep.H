@@ -28,11 +28,15 @@ tmp<volScalarField> FilterViscosityStep =a.FilteringViscosityU();
  dimensionedScalar maxDiff = max(Udifference);
  dimensionedScalar NormalizingFactor = max( one , maxDiff );
  aU.ref() = Udifference/NormalizingFactor;                  //aU = |uFi - U(evolve)|/max(1,normInf(Ufi-U(Evolve)))
+
  
  forAll(aU.boundaryField(),patchi)
 {
   aU.boundaryFieldRef()[patchi] = scalar(0.0);
 } 
+
+
+
 
  UTilda = Ufi;
  heTilda = hefi;
