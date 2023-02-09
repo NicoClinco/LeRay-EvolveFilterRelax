@@ -89,7 +89,8 @@ int main(int argc, char *argv[])
 	
  	 for(label i=0;i<N_Iter;i++){
 	 
-	 #include "DeconvolutionFilteringStep.H"
+//	 #include "DeconvolutionFilteringStep.H"
+	 #include "DeconvolutionFilteringModified.H"
  	 #include "RelaxationStep.H"
  	 #include "printViscosity.H"
 
